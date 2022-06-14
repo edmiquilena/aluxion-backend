@@ -6,6 +6,8 @@ import { FilesModule } from './files/files.module';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
+import { JwtAuthGuard } from './auth/guard/auth.jwt.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 // Load modules + env secrets
 @Module({
@@ -18,6 +20,11 @@ import { UserModule } from './user/user.module';
     UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    }],
 })
 export class AppModule {}

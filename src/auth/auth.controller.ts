@@ -1,6 +1,6 @@
 import {
   Controller,
-  Get, 
+  Get,
   Post,
   Body,
   Patch,
@@ -8,6 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Public } from 'src/lib/public.decorator';
 import { AuthService } from './auth.service';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { RegisterAuthDto } from './dto/register-auth.dto';
@@ -16,15 +17,18 @@ import { RegisterAuthDto } from './dto/register-auth.dto';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
-
+  @Public()
   @Post('login')
   loginUser(@Body() userObject: LoginAuthDto) {
-   return this.authService.login(userObject)
+    return this.authService.login(userObject);
   }
-
+  @Public()
   @Post('register')
   registerUser(@Body() userObject: RegisterAuthDto) {
-    console.log({ ...userObject });
     return this.authService.register(userObject);
+  }
+  @Post('request-reset')
+  requestPasswordReset() {
+   // return this.authService.requestPasswordReset();
   }
 }
