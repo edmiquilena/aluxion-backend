@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
-
+interface simpleVersioning {
+  version: number;
+}
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
+  getVersion(): simpleVersioning {
+    return { version: 1 };
   }
 }

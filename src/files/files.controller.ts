@@ -6,11 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { FilesService } from './files.service';
 import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guard/auth.jwt.guard';
 @ApiTags('files')
 @Controller('files')
 export class FilesController {
@@ -20,7 +22,7 @@ export class FilesController {
   create(@Body() createFileDto: CreateFileDto) {
     return this.filesService.create(createFileDto);
   }
-
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.filesService.findAll();

@@ -1,26 +1,38 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
-
+import { Injectable, NotAcceptableException } from '@nestjs/common';
+import { RegisterAuthDto } from './dto/register-auth.dto';
+import * as bcrypt from 'bcrypt';
+import { LoginAuthDto } from './dto/login-auth.dto';
+import { UserService } from 'src/user/user.service';
+import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
+  constructor(
+    private readonly userService: UserService,
+    private jwtService: JwtService,
+  ) {}
+  async register(userObject: RegisterAuthDto) {
+    return this.userService.newUser(userObject);
   }
 
-  findAll() {
-    return `This action returns all auth`;
-  }
+  async login(userObject: LoginAuthDto) {
+    const { password, username } = userObject;
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
+    const findUser = await this.userService.getUser(username);
+    if (!findUser)
+      throw new NotAcceptableException('username/password mismatch');
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
+    const verifyPassowrd = await bcrypt.compare(password, findUser.password);
+    if (!verifyPassowrd)
+      throw new NotAcceptableException('username/password mismatch');
 
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+    const payload = {
+      username: findUser.username,
+      email: findUser.email,
+      sub: findUser._id,
+    };
+    return {
+      access_token: this.jwtService.sign(payload),
+      ...payload,
+    };
   }
 }

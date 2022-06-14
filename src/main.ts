@@ -1,9 +1,15 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  // API version prefijo
+  app.setGlobalPrefix('v1');
+  // Uso de Pipes para validacion
+  app.useGlobalPipes(new ValidationPipe());
+  // Swagger config
   const config = new DocumentBuilder()
     .setTitle('Aluxion File Uploader API')
     .setDescription(
