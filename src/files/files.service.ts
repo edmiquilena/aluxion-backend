@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
@@ -11,6 +15,8 @@ import { CopyFileDto } from './dto/copy-file.dto';
 import { unsplashQueryFileDto } from './dto/unsplash-file.dto';
 import { createApi } from 'unsplash-js';
 import * as nodeFetch from 'node-fetch';
+import { Types } from 'mongoose';
+import path from 'path';
 
 @Injectable()
 export class FilesService {
@@ -19,7 +25,6 @@ export class FilesService {
     private readonly S3Service: S3Service,
     @InjectModel('file') private fileModule: Model<FileDocument>,
   ) {}
-
 
   async uploadFile(uploadData: S3UploadDto) {
     console.log(uploadData);
@@ -71,15 +76,42 @@ export class FilesService {
     return unsplashResult.response;
   }
 
-  async findAll() {
-    return `This action returns all files`;
+  async downloadHandler(id: Types.ObjectId) {
+    const file = await this.findOne(id);
+    if (!file) new NotFoundException('File does not exist');
+    return { url: file.location };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} file`;
+  async findAll(userId: Types.ObjectId) {
+    const data = await this.fileModule.find({ creator: userId });
+    return { data };
   }
 
-  update(id: number, updateFileDto: UpdateFileDto) {
+  async findOne(id: Types.ObjectId) {
+    const file = await this.fileModule.findById(id);
+    if (!file) return file;
+    const fileObject = file.toObject();
+    fileObject.name = path.basename(file.key, path.extname(file.key));
+    return fileObject;
+  }
+
+  async updateFile(
+    userId: Types.ObjectId,
+    id: Types.ObjectId,
+    updateFileDto: UpdateFileDto,
+  ) {
+    const file = await this.findOne(id);
+    if (!file) return new NotFoundException('File does not exist');
+
+    if (file.creator != userId)
+      return new ForbiddenException('Access forbidden');
+    const newKey = `${updateFileDto.filename}${path.extname(file.key)}`;
+    const oldKey = file.key;
+    const newLocation = file.location.replace(oldKey, newKey);
+    const copyFile = await this.S3Service.CopyFile({ newKey, oldKey });
+    if(!copyFile) new NotFoundException('Something went wrong!');
+   return await this.fileModule.findByIdAndUpdate(id, {key: newKey, location: newLocation}, {new: true})
+
     return `This action updates a #${id} file`;
   }
 
