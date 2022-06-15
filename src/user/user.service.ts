@@ -36,7 +36,7 @@ export class UserService {
 
       const newUser = new this.userModule({ ...userObject });
       await newUser.save();
-      return newUser;
+      return {success: true, user: {username:newUser.username, email: newUser.email}};
     } catch (e) {
       // * code 11000 equals duplicate
       if (e.code === 11000) {
