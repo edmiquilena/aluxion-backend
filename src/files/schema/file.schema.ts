@@ -8,7 +8,7 @@ export class File {
   @Prop({ required: true })
   key: string;
   @Prop({ required: true })
-location: string;
+  location: string;
   @Prop({ type: SchemaTypes.ObjectId, ref: 'User' })
   creator: Types.ObjectId;
 }

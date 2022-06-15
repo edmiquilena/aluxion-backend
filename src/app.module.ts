@@ -12,6 +12,8 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 import { S3Service } from './s3/s3.service';
 import { S3Module } from './s3/s3.module';
+import { IntegrationsService } from './integrations/integrations.service';
+import { IntegrationsModule } from './integrations/integrations.module';
 import generalConfig from './lib/config/general.config';
 import awsConfig from './lib/config/aws.config';
 
@@ -20,7 +22,7 @@ import awsConfig from './lib/config/aws.config';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [generalConfig, awsConfig]
+      load: [generalConfig, awsConfig],
     }),
     MongooseModule.forRoot(process.env.DB_URI),
     UserModule,
@@ -33,8 +35,8 @@ import awsConfig from './lib/config/aws.config';
           host: process.env.SMTP_HOST,
           port: process.env.SMTP_PORT,
           auth: {
-            user: process.env.SMTP_USER, 
-            pass: process.env.SMTP_PASS, 
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS,
           },
         },
         template: {
@@ -47,6 +49,7 @@ import awsConfig from './lib/config/aws.config';
       }),
     }),
     S3Module,
+    IntegrationsModule,
   ],
   controllers: [AppController],
   providers: [
@@ -55,6 +58,8 @@ import awsConfig from './lib/config/aws.config';
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
-    S3Service],
+    S3Service,
+    IntegrationsService,
+  ],
 })
 export class AppModule {}
