@@ -91,7 +91,7 @@ export class UserService {
     user.resetPasswordExpires = null;
     try {
       await user.save();
-      return user;
+      return {success: true, email: user.email}
     } catch (e) {
       throw new NotAcceptableException('Something went wrong!');
     }

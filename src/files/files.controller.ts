@@ -6,28 +6,48 @@ import {
   Patch,
   Param,
   Delete,
+  Request,
   UseGuards,
+  UseInterceptors,
+  UploadedFile,
+  NotAcceptableException,
 } from '@nestjs/common';
 import { FilesService } from './files.service';
 import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guard/auth.jwt.guard';
+import { Public } from 'src/lib/public.decorator';
+import { ConfigService } from '@nestjs/config';
+import { UploadFileDto } from './dto/upload-file.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Express } from 'express';
+import { Multer } from 'multer';
+
+
 @ApiTags('files')
 @Controller('files')
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
-  @Post()
-  create(@Body() createFileDto: CreateFileDto) {
-    return this.filesService.create(createFileDto);
-  }
-  @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
+  findAll(@Request() req: any) {
+    console.log(req.user);
     return this.filesService.findAll();
   }
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file'))
+  upload(@Request() req: any, @Body('url') url?: string, @UploadedFile() file?: Express.Multer.File) {
+if(!file && !url) throw new NotAcceptableException('no valid file');
+if(url) return this.filesService.copyFile({url: url, userId: req.user.userId})
+    return this.filesService.uploadFile({
+      dataBuffer: file.buffer,
+      filename: file.originalname,
+      userId: req.user.userId,
+    });
+  
 
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.filesService.findOne(+id);

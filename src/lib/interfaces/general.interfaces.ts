@@ -5,3 +5,7 @@ export interface simpleVersioning {
     root: string,
     recovery: string
   }
+  export interface AWSConnection {
+    accessKeyId: string,
+    secretAccessKey:  string
+  }

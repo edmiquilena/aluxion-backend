@@ -10,14 +10,17 @@ import { JwtAuthGuard } from './auth/guard/auth.jwt.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
+import { S3Service } from './s3/s3.service';
+import { S3Module } from './s3/s3.module';
 import generalConfig from './lib/config/general.config';
+import awsConfig from './lib/config/aws.config';
 
 // Load modules + env secrets
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [generalConfig]
+      load: [generalConfig, awsConfig]
     }),
     MongooseModule.forRoot(process.env.DB_URI),
     UserModule,
@@ -43,6 +46,7 @@ import generalConfig from './lib/config/general.config';
         },
       }),
     }),
+    S3Module,
   ],
   controllers: [AppController],
   providers: [
@@ -50,6 +54,7 @@ import generalConfig from './lib/config/general.config';
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
-    }],
+    },
+    S3Service],
 })
 export class AppModule {}
