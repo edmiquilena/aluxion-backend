@@ -4,7 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   // API version prefijo
   app.enableVersioning({
     type: VersioningType.URI,
@@ -20,6 +20,7 @@ async function bootstrap() {
     .setVersion('1.0')
     .addTag('auth')
     .addTag('files')
+    .addTag('integrations')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);

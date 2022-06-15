@@ -8,7 +8,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { IntegrationsService } from './integrations.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiProperty, ApiTags } from '@nestjs/swagger';
 import { unsplashQueryFileDto } from './dto/unsplash-file.dto';
 import { Public } from 'src/lib/public.decorator';
 @ApiTags('integrations')
