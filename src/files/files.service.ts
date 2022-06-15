@@ -5,8 +5,8 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { UpdateFileDto } from './dto/update-file.dto';
-import { S3Service } from 'src/s3/s3.service';
-import { S3UploadDto } from 'src/s3/dto/s3.upload.dto';
+import { S3Service } from '../s3/s3.service';
+import { S3UploadDto } from '../s3/dto/s3.upload.dto';
 import { FileDocument } from './schema/file.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';

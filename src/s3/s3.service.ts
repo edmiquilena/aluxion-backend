@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import S3 from 'aws-sdk/clients/s3';
-import { AWSConnection } from 'src/lib/interfaces/general.interfaces';
+import { AWSConnection } from '../lib/interfaces/general.interfaces';
 import { v4 as uuid } from 'uuid';
 import { S3CopyDto } from './dto/s3.copy.dto';
 import { S3UploadDto } from './dto/s3.upload.dto';

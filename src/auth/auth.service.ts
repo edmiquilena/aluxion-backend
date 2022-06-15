@@ -2,13 +2,13 @@ import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { RegisterAuthDto } from './dto/register-auth.dto';
 import * as bcrypt from 'bcrypt';
 import { LoginAuthDto } from './dto/login-auth.dto';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { RequestResetAuthDto } from './dto/reset-request-auth.dto';
-import { ResetUserDto } from 'src/user/dto/reset-user.dto';
+import { ResetUserDto } from '../user/dto/reset-user.dto';
 import { MailerService } from '@nestjs-modules/mailer';
 import { ConfigService } from '@nestjs/config';
-import { RecoveryPath } from 'src/lib/interfaces/general.interfaces';
+import { RecoveryPath } from '../lib/interfaces/general.interfaces';
 
 @Injectable()
 export class AuthService {

@@ -14,7 +14,7 @@ import {
 import { FilesService } from './files.service';
 import { UpdateFileDto } from './dto/update-file.dto';
 import { ApiBasicAuth, ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { Public } from 'src/lib/public.decorator';
+import { Public } from '../lib/public.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
 import { Types } from 'mongoose';
@@ -50,8 +50,7 @@ export class FilesController {
       },
     },
   })
-  upload(@Request() req: any, @UploadedFile() file?: Express.Multer.File) {
-    if (!file) throw new NotAcceptableException('no valid file');
+  upload(@Request() req: any, @UploadedFile() file: Express.Multer.File) {
     return this.filesService.uploadFile({
       dataBuffer: file.buffer,
       filename: file.originalname,

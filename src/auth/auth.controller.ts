@@ -1,7 +1,7 @@
 import { Controller, Post, Body, ParseUUIDPipe } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Public } from 'src/lib/public.decorator';
-import { ResetUserDto } from 'src/user/dto/reset-user.dto';
+import { Public } from '../lib/public.decorator';
+import { ResetUserDto } from '../user/dto/reset-user.dto';
 import { AuthService } from './auth.service';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { RegisterAuthDto } from './dto/register-auth.dto';
@@ -11,6 +11,7 @@ import { RequestResetAuthDto } from './dto/reset-request-auth.dto';
 @Controller({ path: 'auth', version: '1' })
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+  
   @Public()
   @Post('login')
   @ApiOperation({ summary: 'Login to your account' })

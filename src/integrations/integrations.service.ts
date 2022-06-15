@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CopyFileDto } from 'src/files/dto/copy-file.dto';
+import { CopyFileDto } from '../files/dto/copy-file.dto';
 import { unsplashQueryFileDto } from './dto/unsplash-file.dto';
 import { createApi } from 'unsplash-js';
 import * as nodeFetch from 'node-fetch';
-import { FilesService } from 'src/files/files.service';
+import { FilesService } from '../files/files.service';
 @Injectable()
 export class IntegrationsService {
   constructor(private readonly FilesService: FilesService) {}

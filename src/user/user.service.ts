@@ -11,7 +11,7 @@ import { UserDocument } from './schema/user.schema';
 import { v4 as uuidv4 } from 'uuid';
 import { DateTime } from 'luxon';
 import { ResetUserDto } from './dto/reset-user.dto';
-import hashPassword from 'src/lib/password.hash';
+import hashPassword from '../lib/password.hash';
 
 @Injectable()
 export class UserService {

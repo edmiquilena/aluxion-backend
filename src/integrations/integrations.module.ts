@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { IntegrationsService } from './integrations.service';
 import { IntegrationsController } from './integrations.controller';
-import { FilesModule } from 'src/files/files.module';
+import { FilesModule } from '../files/files.module';
 
 @Module({
   controllers: [IntegrationsController],

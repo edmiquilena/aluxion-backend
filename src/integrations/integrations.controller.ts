@@ -10,7 +10,7 @@ import {
 import { IntegrationsService } from './integrations.service';
 import { ApiProperty, ApiTags } from '@nestjs/swagger';
 import { unsplashQueryFileDto } from './dto/unsplash-file.dto';
-import { Public } from 'src/lib/public.decorator';
+import { Public } from '../lib/public.decorator';
 @ApiTags('integrations')
 @Controller({
   path: 'integrations',
