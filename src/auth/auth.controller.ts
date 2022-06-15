@@ -1,17 +1,16 @@
 import {
   Controller,
-  Get,
   Post,
   Body,
-  Patch,
-  Param,
-  Delete,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/lib/public.decorator';
+import { ResetUserDto } from 'src/user/dto/reset-user.dto';
 import { AuthService } from './auth.service';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { RegisterAuthDto } from './dto/register-auth.dto';
+import { RequestResetAuthDto } from './dto/reset-request-auth.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -27,8 +26,23 @@ export class AuthController {
   registerUser(@Body() userObject: RegisterAuthDto) {
     return this.authService.register(userObject);
   }
+  @Public()
   @Post('request-reset')
-  requestPasswordReset() {
-   // return this.authService.requestPasswordReset();
+  requestPasswordReset(@Body() userObject: RequestResetAuthDto) {
+    return this.authService.requestPasswordReset(userObject);
   }
+  @Public()
+  @Post('reset-password')
+  resetPassword(@Body() resetObject: ResetUserDto) {
+    return this.authService.resetPassword(resetObject);
+  }
+
+  @Public()
+  @Post('validate-token')
+  validResetToken(@Body('token', new ParseUUIDPipe()) token: string) {
+    return this.authService.validResetToken(token);
+  }
+
+
+
 }
