@@ -31,7 +31,6 @@ export class FilesController {
   @ApiOperation({ summary: 'List all uploaded files by logged user' })
 
   findAll(@Request() req: any) {
-    console.log(req.user);
     return this.filesService.findAll(req.user.userId);
   }
   @Post('upload')

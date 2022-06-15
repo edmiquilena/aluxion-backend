@@ -47,7 +47,6 @@ export class S3Service {
     if (copyResult) {
       // ! Got no permission to delete, so both files will live in bucket.
       //     const deleteOld = await this.deleteFile(oldKey);
-      //     console.log(deleteOld)
       //    if(deleteOld) {
       return copyResult;
       //    }

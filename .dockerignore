@@ -1,0 +1,5 @@
+Dockerfile
+.dockerignore
+package-lock.json
+README.md
+yarn-error.log
