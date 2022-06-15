@@ -11,6 +11,7 @@ import {
   UseInterceptors,
   UploadedFile,
   NotAcceptableException,
+  Query,
 } from '@nestjs/common';
 import { FilesService } from './files.service';
 import { CreateFileDto } from './dto/create-file.dto';
@@ -23,6 +24,7 @@ import { UploadFileDto } from './dto/upload-file.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
 import { Multer } from 'multer';
+import { unsplashQueryFileDto } from './dto/unsplash-file.dto';
 
 
 @ApiTags('files')
@@ -53,6 +55,13 @@ if(url) return this.filesService.copyFile({url: url, userId: req.user.userId})
     return this.filesService.findOne(+id);
   }
 
+  @Public()
+  @Get('search/unsplash')
+ searchUnsplash(@Query() query: unsplashQueryFileDto) {
+   return this.filesService.searchUnsplash(query)
+  }
+
+  
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateFileDto: UpdateFileDto) {
     return this.filesService.update(+id, updateFileDto);
