@@ -39,9 +39,8 @@ export class FilesController {
   }
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
-  upload(@Request() req: any, @Body('url') url?: string, @UploadedFile() file?: Express.Multer.File) {
-if(!file && !url) throw new NotAcceptableException('no valid file');
-if(url) return this.filesService.copyFile({url: url, userId: req.user.userId})
+  upload(@Request() req: any, @UploadedFile() file?: Express.Multer.File) {
+if(!file) throw new NotAcceptableException('no valid file');
     return this.filesService.uploadFile({
       dataBuffer: file.buffer,
       filename: file.originalname,
@@ -50,6 +49,15 @@ if(url) return this.filesService.copyFile({url: url, userId: req.user.userId})
   
 
   }
+
+  @Post('unsplash')
+  uploadUnsplash(@Request() req: any, @Body('id') id: string) {
+if(!id) throw new NotAcceptableException('no valid file');
+return this.filesService.copyFile({id, userId: req.user.userId})
+  
+
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.filesService.findOne(+id);
@@ -61,7 +69,7 @@ if(url) return this.filesService.copyFile({url: url, userId: req.user.userId})
    return this.filesService.searchUnsplash(query)
   }
 
-  
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateFileDto: UpdateFileDto) {
     return this.filesService.update(+id, updateFileDto);

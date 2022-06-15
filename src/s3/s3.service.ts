@@ -25,6 +25,7 @@ async uploadFile(data: S3UploadDto) {
         ACL: "public-read",
       })
         .promise();
+        return result;
 // return {
 //     Expiration: 'expiry-date="Fri, 17 Jun 2022 00:00:00 GMT", rule-id="Vencimiento De Archivos"',
 //     ETag: '"77f5794e2eb49f7989b8f85e92cfa4e0"',

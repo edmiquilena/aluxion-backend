@@ -7,7 +7,7 @@ userId: string;
 
 
 @IsString()
-url: string;
+id: string;
 
 
 }
