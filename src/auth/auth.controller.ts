@@ -13,7 +13,8 @@ import { RegisterAuthDto } from './dto/register-auth.dto';
 import { RequestResetAuthDto } from './dto/reset-request-auth.dto';
 
 @ApiTags('auth')
-@Controller('auth')
+@Controller({path:'auth',
+version: '1'})
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
   @Public()

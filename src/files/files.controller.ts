@@ -21,7 +21,8 @@ import { Types } from 'mongoose';
 import { ParseObjectIdPipe } from './pipes/ParseObjectId.pipe';
 
 @ApiTags('files')
-@Controller('files')
+@Controller({path:'files',
+version: '1'})
 export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 

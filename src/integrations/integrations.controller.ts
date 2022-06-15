@@ -12,7 +12,11 @@ import { ApiTags } from '@nestjs/swagger';
 import { unsplashQueryFileDto } from './dto/unsplash-file.dto';
 import { Public } from 'src/lib/public.decorator';
 @ApiTags('integrations')
-@Controller('integrations')
+@Controller({
+  path: 'integrations',
+  version: '1',
+})
+
 export class IntegrationsController {
   constructor(private readonly integrationsService: IntegrationsService) {}
 
