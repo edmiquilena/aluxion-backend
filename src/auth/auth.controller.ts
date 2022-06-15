@@ -1,5 +1,5 @@
 import { Controller, Post, Body, ParseUUIDPipe } from '@nestjs/common';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/lib/public.decorator';
 import { ResetUserDto } from 'src/user/dto/reset-user.dto';
 import { AuthService } from './auth.service';
@@ -28,6 +28,16 @@ export class AuthController {
   @Public()
   @Post('request-reset')
   @ApiOperation({ summary: 'Request password reset' })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        username: {
+          type: 'string',
+        },
+      },
+    },
+  })
   requestPasswordReset(@Body() userObject: RequestResetAuthDto) {
     return this.authService.requestPasswordReset(userObject);
   }
@@ -40,6 +50,16 @@ export class AuthController {
 
   @Public()
   @Post('validate-token')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        token: {
+          type: 'string',
+        },
+      },
+    },
+  })
   @ApiOperation({ summary: 'Validate if reset token is real (useful for frontend)' })
   validResetToken(@Body('token', new ParseUUIDPipe()) token: string) {
     return this.authService.validResetToken(token);
