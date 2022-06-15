@@ -19,7 +19,7 @@ import generalConfig from './lib/config/general.config';
       isGlobal: true,
       load: [generalConfig]
     }),
-    MongooseModule.forRoot(process.env.DB_CONNECTION),
+    MongooseModule.forRoot(process.env.DB_URI),
     UserModule,
     AuthModule,
     FilesModule,
